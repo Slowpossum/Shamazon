@@ -4,6 +4,7 @@
   "description": "A mysql/node based faux storefront similar to amazon.",
   "main": "shamazon.js",
   "dependencies": {
+    "console.table": "^0.10.0",
     "inquirer": "^6.3.1",
     "mysql": "^2.17.1"
   },

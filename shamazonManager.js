@@ -138,12 +138,12 @@ function newProduct() {
         {
             type: 'input',
             name: 'productName',
-            message: "Please enter the name of the product to add."
+            message: "Please enter the name of the product to add. (50 characters or less)"
         },
         {
             type: 'input',
             name: 'department',
-            message: "Please enter a department for the product."
+            message: "Please enter a department for the product. (30 characters or less)"
         },
         {
             type: 'input',
@@ -156,8 +156,8 @@ function newProduct() {
             message: "Please enter the number of products to stock."
         }
     ]).then(function (user) {
-        if (user.productName) {
-            if (user.department) {
+        if (user.productName && user.productName.length < 50) {
+            if (user.department && user.department.length < 30) {
                 if (parseInt(user.productPrice)) {
                     if (parseInt(user.productStock)) {
                         connection.query(`INSERT INTO products (product_name, department_name, price, stock_quantity) VALUES ("${user.productName}", "${user.department}", ${parseFloat(user.productPrice).toFixed(2)}, ${user.productStock})`, function (err, res) {
@@ -175,11 +175,11 @@ function newProduct() {
                     main();
                 }
             } else {
-                console.log("\r\nPlease enter a department.\r\n");
+                console.log("\r\nPlease enter a valid department under 50 characters.\r\n");
                 main();
             }
         } else {
-            console.log("\r\nPlease enter a product name.\r\n");
+            console.log("\r\nPlease enter a valid product name under 50 characters.\r\n");
             main();
         }
     });

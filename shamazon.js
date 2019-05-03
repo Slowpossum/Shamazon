@@ -60,7 +60,7 @@ function purchase(id, quantity) {
 
         if (res[0].stock_quantity > quantity) {
             console.log(`\r\nItem purchased: "${res[0].product_name}" x ${quantity}: $${(res[0].price * quantity).toFixed(2)}\r\n`);
-            connection.query(`UPDATE products SET stock_quantity = ${res[0].stock_quantity - quantity} WHERE item_id = ${id}`, function (err, res) {
+            connection.query(`UPDATE products SET stock_quantity = ${res[0].stock_quantity - quantity}, product_sales = ${res[0].product_sales + (quantity * res[0].price)} WHERE item_id = ${id}`, function (err, res) {
                 if (err) throw err;
                 continueQuit();
             });
