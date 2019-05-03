@@ -18,6 +18,8 @@ VALUES ("Oyasumi Punpun, Vol 1", "Books", 15, 10), ("Oyasumi Punpun, Vol 2", "Bo
 
 SELECT * FROM products;
 
-UPDATE products
-SET stock_quantity = 10
-WHERE item_id = 1;
+-- UPDATE products
+-- SET stock_quantity = 10
+-- WHERE item_id = 1;
+
+-- SELECT * FROM products WHERE stock_quantity < 5
