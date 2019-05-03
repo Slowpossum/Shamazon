@@ -23,7 +23,7 @@ function main() {
         for (result of res) {
             console.log(`Item Id: ${result.item_id}`);
             console.log(`Product: ${result.product_name}`);
-            console.log(`Price: $${result.price}`);
+            console.log(`Price: $${result.price.toFixed(2)}`);
             console.log(`Stock: ${result.stock_quantity}\r\n`);
         }
 
@@ -54,16 +54,26 @@ function main() {
     });
 }
 
-function purchase (id, quantity) {
+function purchase(id, quantity) {
     connection.query(`SELECT * FROM products WHERE item_id = ${id}`, function (err, res) {
         if (err) throw err;
 
-        console.log("--Purchase--");
-        console.log(res);
+        // console.log(res[0].stock_quantity);
+
+        if (res[0].stock_quantity > quantity) {
+            console.log(`\r\nItem purchased: "${res[0].product_name}" x ${quantity}: $${(res[0].price * quantity).toFixed(2)}\r\n`);
+            connection.query(`UPDATE products SET stock_quantity = ${res[0].stock_quantity - quantity} WHERE item_id = ${id}`, function (err, res) {
+                if (err) throw err;
+                continueQuit();
+            });
+        } else {
+            console.log(`\r\nThere's an insufficient quantity of "${res[0].product_name}."\r\n`);
+            continueQuit();
+        }
     });
 }
 
-function continueQuit () {
+function continueQuit() {
     inquirer.prompt([
         {
             type: 'list',
