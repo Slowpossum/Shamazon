@@ -22,17 +22,15 @@ CREATE TABLE departments (
 );
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
-VALUES ("Oyasumi Punpun, Vol 1", "Books", 15, 10), ("Oyasumi Punpun, Vol 2", "Books", 15, 10), ("12 Gallon Jar of Assorted Jellybeans", "Food", 20.50, 100), ("12000 Paperclips (Used)", "Office", 5, 2);
+VALUES ("Oyasumi Punpun, Vol 1", "Books", 15, 10), ("Oyasumi Punpun, Vol 2", "Books", 15, 10), ("12 Gallon Jar of Assorted Jellybeans", "Food", 20.50, 100), ("12000 Paperclips (Used)", "Office", 5, 2),
+("A Live Orca", "Pets", 10000, 5), ("Human Skeleton (Imitation)", "Science", 200, 20), ("Human Skeleton (Real)", "Science", 5000, 1);
 
 INSERT INTO departments (department_name, over_head_costs)
-VALUES ("Books", 10000), ("Food", 20000), ("Office", 50000);
-
-INSERT INTO departments (department_name, over_head_costs)
-VALUES ("Books", 12);
+VALUES ("Books", 10000), ("Food", 20000), ("Office", 50000), ("Science", 5000), ("Pets", 10000);
 
 -- SELECT * FROM departments;
 
--- SELECT d.department_id, d.department_name, d.over_head_costs, SUM(p.product_sales) AS product_sales,  product_sales - d.over_head_costs AS total_profit FROM departments AS d INNER JOIN products AS p ON p.department_name=d.department_name GROUP BY department_name;
+-- SELECT d.department_id, d.department_name, d.over_head_costs, COALESCE(SUM(p.product_sales), 0) AS product_sales,  COALESCE(product_sales - d.over_head_costs, 0) AS total_profit FROM departments AS d LEFT JOIN products AS p ON p.department_name=d.department_name GROUP BY department_name;
 
 
 

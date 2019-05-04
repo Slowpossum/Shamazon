@@ -37,9 +37,9 @@ function main() {
 }
 
 function viewDept() {
-    connection.query(`SELECT d.department_id, d.department_name, d.over_head_costs, SUM(p.product_sales) AS product_sales,  product_sales - d.over_head_costs AS total_profit 
+    connection.query(`SELECT d.department_id, d.department_name, d.over_head_costs, COALESCE(SUM(p.product_sales), 0) AS product_sales,  COALESCE(product_sales - d.over_head_costs, 0) AS total_profit 
     FROM departments AS d 
-    INNER JOIN products AS p 
+    LEFT JOIN products AS p 
     ON p.department_name=d.department_name 
     GROUP BY department_name`,
         function (err, res) {
@@ -67,11 +67,13 @@ function createDept() {
         if (user.deptName && user.deptName.length < 50) {
             connection.query(`INSERT INTO departments (department_name, over_head_costs)
             VALUES ("${user.deptName}", ${parseFloat(user.overhead).toFixed(2) || 0})`, function (err, res) {
-                    if (err.code === "ER_DUP_ENTRY") {
-                        console.log("\r\nDepartment already exists.\r\n");
-                        return main();
-                    } else {
-                        throw err;
+                    if (err) {
+                        if (err.code === "ER_DUP_ENTRY") {
+                            console.log("\r\nDepartment already exists.\r\n");
+                            return main();
+                        } else {
+                            throw err;
+                        }
                     }
 
                     console.log("\r\nDepartment created.\r\n");
